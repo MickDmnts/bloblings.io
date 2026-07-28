@@ -2,31 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bloblings — beta feedback</title>
 <meta name="description" content="Playing the Bloblings closed beta? Tell me how it went. A short questionnaire that copies your answers to the clipboard.">
 <meta name="theme-color" content="#131c16">
 <link rel="icon" href="icon.png">
 <style>
-  /* minimal reset: the layout below spaces with flex gap, not element margins */
-  *, *::before, *::after { box-sizing: border-box; }
-  * { margin: 0; padding: 0; }
-  ul, ol { list-style: none; }
-  img, svg { display: block; max-width: 100%; }
-  button, input, textarea { font: inherit; color: inherit; }
-</style>
-<style>
   :root {
-    --ground: #f2f5ea;
-    --surface: #fbfcf6;
+    --ground: #f3f6ec;
+    --surface: #ffffff;
     --field: #ffffff;
-    --line: #dbe3cf;
-    --line-soft: #e7ecdd;
+    --line: #e0e7d3;
+    --line-soft: #eaefe0;
     --ink: #17251a;
     --ink-soft: #55654e;
     --ink-faint: #7c8b74;
     --accent: #8a6a00;
-    --accent-fill: #f2c94c;
+    --gold: #f2c94c;
     --blob: #6f9a33;
     --sky-top: #e2edcf;
     --sky-bottom: #edf3df;
@@ -35,110 +27,83 @@
     --nav-edge: rgba(23, 37, 26, 0.08);
     --nav-wash: rgba(242, 201, 76, 0.3);
     --nav-halo: rgba(242, 201, 76, 0.5);
+    --lift: 0 -2px 16px rgba(23, 37, 26, 0.1);
 
-    --font-display: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", "Trebuchet MS", system-ui, sans-serif;
-    --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --font-mono: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace;
-
-    --step-0: 1rem;
-    --step-1: 1.0625rem;
-    --step-2: 1.25rem;
-    --step-3: 1.6rem;
-    --step-4: clamp(2.1rem, 6vw, 2.9rem);
+    --display: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", "Trebuchet MS", system-ui, sans-serif;
+    --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --ground: #131c16;
-      --surface: #1b2820;
-      --field: #101815;
-      --line: #2e3d30;
-      --line-soft: #26332a;
-      --ink: #e9f2d8;
-      --ink-soft: #a3b699;
-      --ink-faint: #7d9074;
-      --accent: #f2c94c;
-      --accent-fill: #f2c94c;
-      --blob: #b3d967;
-      --sky-top: #26351f;
-      --sky-bottom: #19241a;
+      --ground: #131c16; --surface: #1c2820; --field: #101815;
+      --line: #2c3a2e; --line-soft: #25322a;
+      --ink: #e9f2d8; --ink-soft: #a3b699; --ink-faint: #7d9074;
+      --accent: #f2c94c; --blob: #b3d967;
+      --sky-top: #26351f; --sky-bottom: #19241a;
       --shade: rgba(0, 0, 0, 0.28);
       --nav-well: rgba(0, 0, 0, 0.2);
       --nav-edge: rgba(233, 242, 216, 0.09);
       --nav-wash: rgba(242, 201, 76, 0.18);
       --nav-halo: rgba(242, 201, 76, 0.45);
+      --lift: 0 -2px 16px rgba(0, 0, 0, 0.4);
     }
   }
 
   :root[data-theme="dark"] {
-    --ground: #131c16;
-    --surface: #1b2820;
-    --field: #101815;
-    --line: #2e3d30;
-    --line-soft: #26332a;
-    --ink: #e9f2d8;
-    --ink-soft: #a3b699;
-    --ink-faint: #7d9074;
-    --accent: #f2c94c;
-    --accent-fill: #f2c94c;
-    --blob: #b3d967;
-    --sky-top: #26351f;
-    --sky-bottom: #19241a;
+    --ground: #131c16; --surface: #1c2820; --field: #101815;
+    --line: #2c3a2e; --line-soft: #25322a;
+    --ink: #e9f2d8; --ink-soft: #a3b699; --ink-faint: #7d9074;
+    --accent: #f2c94c; --blob: #b3d967;
+    --sky-top: #26351f; --sky-bottom: #19241a;
     --shade: rgba(0, 0, 0, 0.28);
     --nav-well: rgba(0, 0, 0, 0.2);
     --nav-edge: rgba(233, 242, 216, 0.09);
     --nav-wash: rgba(242, 201, 76, 0.18);
     --nav-halo: rgba(242, 201, 76, 0.45);
+    --lift: 0 -2px 16px rgba(0, 0, 0, 0.4);
   }
 
   :root[data-theme="light"] {
-    --ground: #f2f5ea;
-    --surface: #fbfcf6;
-    --field: #ffffff;
-    --line: #dbe3cf;
-    --line-soft: #e7ecdd;
-    --ink: #17251a;
-    --ink-soft: #55654e;
-    --ink-faint: #7c8b74;
-    --accent: #8a6a00;
-    --accent-fill: #f2c94c;
-    --blob: #6f9a33;
-    --sky-top: #e2edcf;
-    --sky-bottom: #edf3df;
+    --ground: #f3f6ec; --surface: #ffffff; --field: #ffffff;
+    --line: #e0e7d3; --line-soft: #eaefe0;
+    --ink: #17251a; --ink-soft: #55654e; --ink-faint: #7c8b74;
+    --accent: #8a6a00; --blob: #6f9a33;
+    --sky-top: #e2edcf; --sky-bottom: #edf3df;
     --shade: rgba(23, 37, 26, 0.09);
     --nav-well: rgba(255, 255, 255, 0.55);
     --nav-edge: rgba(23, 37, 26, 0.08);
     --nav-wash: rgba(242, 201, 76, 0.3);
     --nav-halo: rgba(242, 201, 76, 0.5);
+    --lift: 0 -2px 16px rgba(23, 37, 26, 0.1);
   }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+  img, svg { display: block; max-width: 100%; }
+  button, input, textarea { font: inherit; color: inherit; }
 
   body {
     background: var(--ground);
     color: var(--ink);
-    font-family: var(--font-body);
-    font-size: var(--step-0);
-    line-height: 1.65;
+    font-family: var(--body);
+    font-size: 1.02rem;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
 
-  .wrap {
-    max-width: 44rem;
-    margin: 0 auto;
-    padding: clamp(2.5rem, 6vw, 3.5rem) clamp(1.15rem, 4vw, 2rem) 5rem;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(2.5rem, 6vw, 3.5rem);
-  }
+  a { color: var(--accent); }
 
-  /* the same meadow the front page opens on */
+  .wrap { max-width: 44rem; margin: 0 auto; padding: 0 clamp(1.15rem, 4vw, 2rem); }
+
+  /* ---------- the meadow, shared with the other pages ---------- */
 
   .hero {
     background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
     border-radius: 0 0 clamp(1.75rem, 6vw, 3rem) clamp(1.75rem, 6vw, 3rem);
-    padding-bottom: clamp(2.25rem, 6vw, 3.25rem);
+    padding-bottom: clamp(2rem, 5vw, 2.75rem);
   }
-
-  .hero-wrap { max-width: 44rem; margin: 0 auto; padding: 0 clamp(1.15rem, 4vw, 2rem); }
 
   nav {
     display: flex;
@@ -151,9 +116,8 @@
   .home { display: block; border-radius: 10px; }
   .home img { width: 34px; height: 34px; border-radius: 10px; transition: box-shadow 0.14s ease; }
   .home:hover img { box-shadow: 0 0 0 3px var(--nav-halo); }
-  .home:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; }
+  .home:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-  /* one gold pill marks where you are, the rest wash gold as you pass over them */
   .nav-links {
     display: flex;
     align-items: center;
@@ -177,187 +141,237 @@
   }
 
   .nav-links a:hover { color: var(--ink); background: var(--nav-wash); }
-
-  /* the page you are on is tinted, not filled: solid gold stays reserved for actions */
-  .nav-links a[aria-current] {
-    color: var(--accent);
-    background: var(--nav-wash);
-    font-weight: 700;
-  }
-
+  .nav-links a[aria-current] { color: var(--accent); background: var(--nav-wash); font-weight: 700; }
   .nav-links a[aria-current]:hover { color: var(--accent); background: var(--nav-wash); }
-  .nav-links a:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+  .nav-links a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
   @media (max-width: 380px) {
     .nav-links a { padding: 0.32rem 0.7rem; font-size: 0.84rem; }
   }
 
-  /* masthead */
-
-  .mast {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-    padding-top: clamp(1.25rem, 4vw, 2rem);
-  }
-
+  .mast { display: flex; flex-direction: column; gap: 0.9rem; padding-top: clamp(1rem, 4vw, 1.75rem); }
   .mast-top { display: flex; align-items: center; gap: 1rem; }
 
-  .blob {
-    flex: none;
-    width: 64px;
-    height: 64px;
-    animation: bob 4.2s ease-in-out infinite;
-  }
+  .blob { flex: none; width: 60px; height: 60px; animation: bob 4.2s ease-in-out infinite; }
 
   @keyframes bob {
     0%, 100% { transform: translateY(0) scale(1, 1); }
     50% { transform: translateY(-4px) scale(0.985, 1.015); }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .blob { animation: none; }
-    .home img, .nav-links a { transition: none; }
-  }
-
   .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.11em;
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--ink-faint);
+    color: var(--accent);
   }
 
   h1 {
-    font-family: var(--font-display);
-    font-size: var(--step-4);
+    font-family: var(--display);
+    font-size: clamp(2rem, 6vw, 2.8rem);
     line-height: 1.05;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.028em;
     text-wrap: balance;
-    margin-top: 0.15rem;
+    margin-top: 0.1rem;
   }
 
-  .lede { font-size: var(--step-1); color: var(--ink-soft); max-width: 58ch; }
+  .lede { color: var(--ink-soft); max-width: 56ch; }
 
-  /* sections */
+  /* three promises, so the shape of the task is clear before any scrolling */
+  .facts { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 
-  section { display: flex; flex-direction: column; gap: 1.25rem; }
-
-  .head {
-    display: flex;
-    flex-direction: column;
+  .fact {
+    display: inline-flex;
+    align-items: center;
     gap: 0.4rem;
-    padding-top: 1.4rem;
-    border-top: 1px solid var(--line);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: var(--nav-well);
+    border: 1px solid var(--nav-edge);
+    border-radius: 999px;
+    padding: 0.28rem 0.8rem;
   }
+
+  .fact b { color: var(--ink); font-weight: 700; }
+
+  /* ---------- main ---------- */
+
+  main { padding: clamp(2rem, 5vw, 3rem) 0 8rem; display: flex; flex-direction: column; gap: clamp(1.75rem, 4vw, 2.5rem); }
 
   h2 {
-    font-family: var(--font-display);
-    font-size: var(--step-3);
+    font-family: var(--display);
+    font-size: clamp(1.3rem, 3.6vw, 1.6rem);
     font-weight: 700;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.02em;
     line-height: 1.2;
     text-wrap: balance;
   }
 
-  .head p { color: var(--ink-soft); max-width: 60ch; }
+  /* ---------- the five steps, folded away for anyone who has played ---------- */
 
-  /* quick start */
-
-  .steps { display: flex; flex-direction: column; gap: 0.7rem; }
-
-  .step {
-    display: grid;
-    grid-template-columns: 1.5rem 1fr;
-    gap: 0.7rem;
-    align-items: start;
-    color: var(--ink-soft);
+  .starter {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
   }
 
+  .starter summary {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    font-weight: 650;
+    list-style: none;
+  }
+
+  .starter summary::-webkit-details-marker { display: none; }
+
+  .starter summary::after {
+    content: "";
+    width: 0.5rem; height: 0.5rem;
+    margin-left: auto;
+    border-right: 2px solid var(--ink-faint);
+    border-bottom: 2px solid var(--ink-faint);
+    transform: rotate(45deg);
+    transition: transform 0.18s ease;
+  }
+
+  .starter[open] summary::after { transform: rotate(-135deg); }
+  .starter summary:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+
+  .starter .tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--nav-wash);
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+  }
+
+  .steps { display: flex; flex-direction: column; gap: 0.75rem; padding: 0 1.2rem 1.3rem; }
+
+  .step { display: grid; grid-template-columns: 1.6rem 1fr; gap: 0.7rem; color: var(--ink-soft); }
+
   .step span {
-    font-family: var(--font-mono);
+    font-family: var(--mono);
+    font-size: 0.82rem;
     font-weight: 700;
     color: var(--accent);
     font-variant-numeric: tabular-nums;
+    line-height: 1.9;
   }
 
   .step b { color: var(--ink); font-weight: 650; }
 
-  /* form */
+  /* ---------- the form, in five short groups instead of one wall ---------- */
 
-  .q {
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-    padding-bottom: 1.35rem;
-    border-bottom: 1px solid var(--line-soft);
+  form { display: flex; flex-direction: column; gap: clamp(1.5rem, 4vw, 2rem); }
+
+  fieldset { border: 0; display: flex; flex-direction: column; gap: 1.3rem; }
+
+  legend { display: contents; }
+
+  .group-head { display: flex; align-items: baseline; gap: 0.7rem; }
+
+  .group-head .n {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: var(--nav-wash);
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+    flex: none;
   }
 
-  .qs { display: flex; flex-direction: column; gap: 1.35rem; }
+  .q { display: flex; flex-direction: column; gap: 0.5rem; }
 
-  .q:last-child { padding-bottom: 0; border-bottom: 0; }
+  .q > label { font-weight: 650; color: var(--ink); text-wrap: pretty; line-height: 1.45; }
 
-  .q > label {
-    font-weight: 600;
-    color: var(--ink);
-    text-wrap: pretty;
+  .hint { font-size: 0.88rem; color: var(--ink-faint); }
+
+  .star {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
   }
-
-  .hint { font-size: 0.9rem; color: var(--ink-faint); margin-top: -0.3rem; }
 
   input[type="text"], textarea {
     width: 100%;
     font-family: inherit;
-    font-size: 0.97rem;
-    line-height: 1.55;
+    font-size: 1rem;
+    line-height: 1.6;
     color: var(--ink);
     background: var(--field);
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 0.65rem 0.8rem;
-    resize: vertical;
+    border-radius: 12px;
+    padding: 0.7rem 0.85rem;
+    resize: none;
+    transition: border-color 0.14s ease;
   }
 
-  textarea { min-height: 4.6rem; }
+  textarea { min-height: 3.4rem; overflow: hidden; }
 
   input[type="text"]::placeholder, textarea::placeholder { color: var(--ink-faint); }
 
+  input[type="text"]:hover, textarea:hover { border-color: var(--ink-faint); }
+
   input[type="text"]:focus-visible, textarea:focus-visible {
-    outline: 2px solid var(--accent-fill);
+    outline: 2px solid var(--gold);
     outline-offset: 1px;
     border-color: transparent;
   }
 
-  .picks { display: flex; flex-direction: column; gap: 0.55rem; }
+  /* a filled answer is quietly marked, so progress is visible in place */
+  .q.done > label::after {
+    content: "\2713";
+    color: var(--blob);
+    font-weight: 700;
+    margin-left: 0.4rem;
+  }
+
+  /* ---------- the wishlist, the one enjoyable question ---------- */
+
+  .picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.6rem; }
 
   .pick {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 0.65rem;
+    gap: 0.7rem;
     align-items: start;
-    padding: 0.7rem 0.85rem;
+    padding: 0.85rem 0.95rem;
     background: var(--surface);
-    border: 1px solid var(--line-soft);
-    border-radius: 12px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
     cursor: pointer;
+    transition: border-color 0.14s ease, background 0.14s ease;
   }
 
-  .pick:hover { border-color: var(--line); }
+  .pick:hover { border-color: var(--ink-faint); }
 
-  .pick input {
-    margin-top: 0.35rem;
-    accent-color: var(--accent-fill);
-    width: 1rem;
-    height: 1rem;
+  .pick.on, .pick:has(input:checked) {
+    background: var(--nav-wash);
+    border-color: var(--gold);
   }
 
-  .pick input:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+  .pick input { margin-top: 0.35rem; accent-color: var(--gold); width: 1.05rem; height: 1.05rem; }
+  .pick input:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-  .pick b { font-weight: 650; color: var(--ink); }
-  .pick i { font-style: normal; color: var(--ink-soft); display: block; font-size: 0.93rem; }
+  .pick b { font-weight: 650; color: var(--ink); display: block; line-height: 1.4; }
+  .pick i { font-style: normal; color: var(--ink-soft); display: block; font-size: 0.9rem; line-height: 1.5; margin-top: 0.15rem; }
 
-  /* send */
+  /* ---------- sending ---------- */
 
   .send {
     background: var(--surface);
@@ -371,73 +385,128 @@
 
   .send p { color: var(--ink-soft); }
 
-  .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
-
   button {
-    font-family: inherit;
-    font-size: 0.97rem;
     font-weight: 650;
-    color: #17251a;
-    background: var(--accent-fill);
-    border: 0;
+    font-size: 0.97rem;
+    cursor: pointer;
     border-radius: 999px;
     padding: 0.65rem 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 2px 0 var(--shade);
-    transition: transform 0.12s ease;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    transition: transform 0.12s ease, border-color 0.14s ease;
   }
 
+  button.gold { background: var(--gold); color: #17251a; border-color: transparent; box-shadow: 0 2px 0 var(--shade); }
+  button.quiet { background: transparent; color: var(--ink-soft); }
   button:hover { transform: translateY(-1px); }
   button:active { transform: translateY(1px); box-shadow: none; }
-  button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  @media (prefers-reduced-motion: reduce) {
-    button { transition: none; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+
+  .said { font-size: 0.9rem; font-weight: 600; color: var(--blob); }
+  .said:empty { display: none; }
+
+  /* ---------- the bar that follows you down the page ---------- */
+
+  .rail {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 6;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    box-shadow: var(--lift);
+    padding: 0.7rem 0 calc(0.7rem + env(safe-area-inset-bottom));
+    transform: translateY(110%);
+    transition: transform 0.22s ease;
   }
 
-  .said {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--blob);
+  .rail.up { transform: translateY(0); }
+
+  .rail .inner { display: flex; align-items: center; gap: 0.9rem; }
+
+  .meter { flex: 1 1 auto; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+
+  .meter .count { font-size: 0.82rem; font-weight: 600; color: var(--ink-soft); }
+  .meter .count b { color: var(--ink); }
+
+  .track { height: 5px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .track div { height: 100%; width: 0; background: var(--gold); border-radius: 999px; transition: width 0.25s ease; }
+
+  .rail button { flex: none; padding: 0.55rem 1.25rem; font-size: 0.92rem; }
+
+  @media (max-width: 520px) {
+    .rail .inner { gap: 0.7rem; }
+    .rail button { padding: 0.55rem 1rem; }
+    .meter .count { font-size: 0.78rem; }
   }
 
-  /* coming next */
+  /* ---------- restored-work notice ---------- */
+
+  .kept {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    background: var(--nav-wash);
+    border: 1px solid var(--gold);
+    border-radius: 14px;
+    padding: 0.8rem 1rem;
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+
+  .kept[hidden] { display: none; }
+  .kept button { padding: 0.35rem 0.9rem; font-size: 0.85rem; }
+
+  /* ---------- coming next ---------- */
 
   .next { display: flex; flex-direction: column; gap: 0.9rem; }
 
-  .next div {
+  .next li {
     display: grid;
-    grid-template-columns: 0.5rem 1fr;
-    gap: 0.8rem;
+    grid-template-columns: 0.55rem 1fr;
+    gap: 0.9rem;
     align-items: start;
     color: var(--ink-soft);
-    max-width: 62ch;
+    max-width: 60ch;
   }
 
-  .next div::before {
+  .next li::before {
     content: "";
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.55rem; height: 0.55rem;
     border-radius: 50%;
     background: var(--blob);
-    margin-top: 0.62rem;
+    margin-top: 0.66rem;
   }
 
   .next b { color: var(--ink); font-weight: 650; }
 
-  .thanks {
-    color: var(--ink-soft);
-    text-align: center;
-    padding-top: 0.5rem;
-    max-width: 52ch;
-    margin: 0 auto;
+  .thanks { color: var(--ink-soft); text-align: center; max-width: 52ch; margin: 0 auto; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 2rem 0 3rem;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blob { animation: none; }
+    *, *::before, *::after { transition: none !important; }
   }
 </style>
 </head>
 <body>
 
 <header class="hero">
-  <div class="hero-wrap">
+  <div class="wrap">
     <nav>
       <a class="home" href="index.html"><img src="icon.png" alt="Bloblings home"></a>
       <div class="nav-links">
@@ -449,243 +518,380 @@
 
     <div class="mast">
       <div class="mast-top">
-      <svg class="blob" viewBox="0 0 64 64" role="img" aria-label="A blobling">
-        <defs>
-          <radialGradient id="body" cx="38%" cy="32%" r="72%">
-            <stop offset="0%" stop-color="#cfe98a" />
-            <stop offset="62%" stop-color="#b3d967" />
-            <stop offset="100%" stop-color="#8fb84c" />
-          </radialGradient>
-        </defs>
-        <ellipse cx="32" cy="57" rx="15" ry="3.4" fill="#000" opacity="0.18" />
-        <ellipse cx="27.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(-26 27.5 15.5)" />
-        <ellipse cx="36.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(26 36.5 15.5)" />
-        <ellipse cx="32" cy="35" rx="23" ry="24" fill="url(#body)" />
-        <ellipse cx="21.5" cy="40" rx="5" ry="3.4" fill="#e5896f" opacity="0.5" />
-        <ellipse cx="42.5" cy="40" rx="5" ry="3.4" fill="#e5896f" opacity="0.5" />
-        <ellipse cx="24" cy="31" rx="2.9" ry="3.8" fill="#1c2415" />
-        <ellipse cx="40" cy="31" rx="2.9" ry="3.8" fill="#1c2415" />
-        <circle cx="22.9" cy="29.4" r="1.05" fill="#fff" />
-        <circle cx="38.9" cy="29.4" r="1.05" fill="#fff" />
-      </svg>
-      <div>
-        <div class="eyebrow">Closed beta</div>
-        <h1>Thanks for testing Bloblings</h1>
-      </div>
+        <svg class="blob" viewBox="0 0 64 64" role="img" aria-label="A blobling">
+          <defs>
+            <radialGradient id="body" cx="38%" cy="32%" r="72%">
+              <stop offset="0%" stop-color="#cfe98a" />
+              <stop offset="62%" stop-color="#b3d967" />
+              <stop offset="100%" stop-color="#8fb84c" />
+            </radialGradient>
+          </defs>
+          <ellipse cx="32" cy="57" rx="15" ry="3.4" fill="#000" opacity="0.18" />
+          <ellipse cx="27.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(-26 27.5 15.5)" />
+          <ellipse cx="36.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(26 36.5 15.5)" />
+          <ellipse cx="32" cy="35" rx="23" ry="24" fill="url(#body)" />
+          <ellipse cx="21.5" cy="40" rx="5" ry="3.4" fill="#e5896f" opacity="0.5" />
+          <ellipse cx="42.5" cy="40" rx="5" ry="3.4" fill="#e5896f" opacity="0.5" />
+          <ellipse cx="24" cy="31" rx="2.9" ry="3.8" fill="#1c2415" />
+          <ellipse cx="40" cy="31" rx="2.9" ry="3.8" fill="#1c2415" />
+          <circle cx="22.9" cy="29.4" r="1.05" fill="#fff" />
+          <circle cx="38.9" cy="29.4" r="1.05" fill="#fff" />
+        </svg>
+        <div>
+          <div class="eyebrow">Closed beta</div>
+          <h1>Thanks for testing Bloblings</h1>
+        </div>
       </div>
       <p class="lede">
-        You are playing an early version of a tiny colony sim. Hatch bloblings, keep them fed
-        and happy, and watch a colony grow. Play however you like for a while, then tell me
-        how it went &mdash; the questions below take about five minutes.
+        You are playing an early version of a tiny colony sim. Play however you like for a
+        while, then tell me how it went. Blunt is more useful than polite &mdash; the things
+        that annoyed you or confused you are the most valuable part.
       </p>
+      <div class="facts">
+        <span class="fact"><b>5 minutes</b></span>
+        <span class="fact"><b>Every question optional</b></span>
+        <span class="fact"><b>Nothing is uploaded</b></span>
+        <span class="fact"><b>Saves as you type</b></span>
+      </div>
     </div>
   </div>
 </header>
 
 <div class="wrap">
+  <main>
 
-  <section>
-    <div class="head">
-      <h2>If you have never opened it</h2>
-      <p>The game teaches itself, so you can skip this. The short version:</p>
-    </div>
-    <div class="steps">
-      <div class="step"><span>1</span><p><b>Tap the egg.</b> It only hatches when you tap it, a few times.</p></div>
-      <div class="step"><span>2</span><p><b>Feed them.</b> Pick Feed, tap the ground, and hungry bloblings walk over to eat.</p></div>
-      <div class="step"><span>3</span><p><b>Watch the colour.</b> Bloblings turn red when they are unhappy. Pick Pet and tap a red one.</p></div>
-      <div class="step"><span>4</span><p><b>Clean up.</b> Droppings upset everyone nearby. Pick Clean and tap them.</p></div>
-      <div class="step"><span>5</span><p><b>Fill the colony, then retire it</b> from the menu to bank Bloom, and spend it on upgrades that carry into your next colony.</p></div>
-    </div>
-  </section>
-
-  <section>
-    <div class="head">
-      <h2>How did it go?</h2>
-      <p>
-        Answer whatever you have an opinion about and leave the rest blank. Blunt is more
-        useful than polite &mdash; the things that annoyed you are the most valuable part.
-      </p>
+    <div class="kept" id="kept" hidden>
+      <span id="keptsaid">Your earlier answers are back.</span>
+      <button type="button" class="quiet" id="wipe">Start over</button>
     </div>
 
-    <div class="qs">
-
-      <div class="q">
-        <label for="device">What phone are you on?</label>
-        <p class="hint">Model and Android version if you know it. Helps me chase crashes.</p>
-        <input type="text" id="device" data-q="Phone" placeholder="e.g. Pixel 7a, Android 14" />
+    <details class="starter">
+      <summary><span class="tag">New?</span> Never opened it &mdash; five steps to get going</summary>
+      <div class="steps">
+        <div class="step"><span>1</span><p><b>Tap the egg.</b> It only hatches when you tap it, a few times.</p></div>
+        <div class="step"><span>2</span><p><b>Feed them.</b> Pick Feed, tap the ground, and hungry bloblings walk over to eat.</p></div>
+        <div class="step"><span>3</span><p><b>Watch the colour.</b> Bloblings turn red when they are unhappy. Pick Pet and tap a red one.</p></div>
+        <div class="step"><span>4</span><p><b>Clean up.</b> Droppings upset everyone nearby. Pick Clean and tap them.</p></div>
+        <div class="step"><span>5</span><p><b>Fill the colony, then retire it</b> from the menu to bank Bloom, and spend it on upgrades that carry into your next colony.</p></div>
       </div>
+    </details>
 
-      <div class="q">
-        <label for="played">Roughly how long did you play, over how many sittings?</label>
-        <input type="text" id="played" data-q="Time played" placeholder="e.g. about an hour, three sittings" />
-      </div>
+    <form id="form" autocomplete="off">
 
-      <div class="q">
-        <label for="ending">How did your first colony end?</label>
-        <p class="hint">Did you retire it on purpose, did it die out, or are you still on it?</p>
-        <textarea id="ending" data-q="How the first colony ended"></textarea>
-      </div>
+      <fieldset>
+        <legend><div class="group-head"><span class="n">1</span><h2>Your run</h2></div></legend>
 
-      <div class="q">
-        <label for="pace">Did your first colony feel too quick, too slow, or about right?</label>
-        <textarea id="pace" data-q="Pacing"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="tutorial">Did you finish the opening walkthrough? If you stopped or skipped, where?</label>
-        <textarea id="tutorial" data-q="Tutorial"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="lost">Was there ever a moment you did not know what to do next?</label>
-        <p class="hint">This is the single most useful answer on the page.</p>
-        <textarea id="lost" data-q="Moments of confusion"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="bloom">How did earning Bloom feel &mdash; fair, too slow, or too generous?</label>
-        <p class="hint">Bloom is what you get for retiring a colony, spent in the shop.</p>
-        <textarea id="bloom" data-q="Bloom economy"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="zen">Did you try Zen mode? If so, which did you prefer and why?</label>
-        <p class="hint">Zen has no cap and no scoring. You switch styles on the main menu.</p>
-        <textarea id="zen" data-q="Zen vs Run"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="kept">What made you want to keep playing?</label>
-        <textarea id="kept" data-q="What kept you playing"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="stopped">What made you put it down?</label>
-        <textarea id="stopped" data-q="What made you stop"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="broken">Did anything break, freeze, look wrong, or annoy you?</label>
-        <textarea id="broken" data-q="Bugs and annoyances"></textarea>
-      </div>
-
-      <div class="q">
-        <label for="again">Would you open it again tomorrow? Be honest.</label>
-        <textarea id="again" data-q="Would you play again"></textarea>
-      </div>
-
-      <div class="q">
-        <label>Which of these would you most want next?</label>
-        <p class="hint">Tick as many as you like. Your votes decide what comes first.</p>
-        <div class="picks">
-          <label class="pick"><input type="checkbox" data-pick="Traits and inheritance" /><span><b>Bloblings that pass traits to their children</b><i>Breed a bloodline: hardier eaters, tidier blobs, sunnier moods.</i></span></label>
-          <label class="pick"><input type="checkbox" data-pick="Run events" /><span><b>Surprises while a colony lives</b><i>A wanderer asks to join, a berry bloom, a cold snap. You choose how to react.</i></span></label>
-          <label class="pick"><input type="checkbox" data-pick="Weather and day night" /><span><b>Weather, and day turning to night</b><i>Dawn, dusk, rain, and blobs that slow down in the dark.</i></span></label>
-          <label class="pick"><input type="checkbox" data-pick="Retire boons" /><span><b>A choice every time you retire</b><i>Pick one lasting quirk that changes how every colony after plays.</i></span></label>
-          <label class="pick"><input type="checkbox" data-pick="Cosmetics" /><span><b>Hats and colours to unlock</b><i>Spend Bloom on how your colony looks, not just how it plays.</i></span></label>
-          <label class="pick"><input type="checkbox" data-pick="Family trees" /><span><b>Family trees</b><i>See who descended from your very first blobling.</i></span></label>
-          <label class="pick"><input type="checkbox" data-pick="Shareable colony card" /><span><b>A shareable picture of your colony</b><i>One image with your best run on it, ready to post.</i></span></label>
-          <label class="pick"><input type="checkbox" data-pick="Adaptive music" /><span><b>Music that follows the mood</b><i>The soundtrack thickens as the colony grows and softens when it struggles.</i></span></label>
+        <div class="q">
+          <label for="device">What phone are you on?</label>
+          <p class="hint">Model and Android version if you know it. Helps me chase crashes.</p>
+          <input type="text" id="device" data-q="Phone" placeholder="e.g. Pixel 7a, Android 14">
         </div>
-      </div>
 
-      <div class="q">
-        <label for="wish">Anything you wish it did that is not on that list?</label>
-        <textarea id="wish" data-q="Wishes"></textarea>
-      </div>
+        <div class="q">
+          <label for="played">Roughly how long did you play, over how many sittings?</label>
+          <input type="text" id="played" data-q="Time played" placeholder="e.g. about an hour, three sittings">
+        </div>
 
-    </div>
-  </section>
+        <div class="q">
+          <label for="ending">How did your first colony end?</label>
+          <p class="hint">Did you retire it on purpose, did it die out, or are you still on it?</p>
+          <textarea id="ending" data-q="How the first colony ended" rows="2"></textarea>
+        </div>
 
-  <section class="send">
-    <h2>Sending it back</h2>
-    <p>
-      Nothing here is uploaded anywhere. Press the button, your answers get copied as plain
-      text, and you paste them wherever we are talking.
-    </p>
-    <div class="actions">
-      <button type="button" id="copy">Copy my answers</button>
-      <span class="said" id="said" role="status" aria-live="polite"></span>
-    </div>
-  </section>
+        <div class="q">
+          <label for="pace">Did your first colony feel too quick, too slow, or about right?</label>
+          <textarea id="pace" data-q="Pacing" rows="2"></textarea>
+        </div>
+      </fieldset>
 
-  <section>
-    <div class="head">
-      <h2>Where it is heading</h2>
+      <fieldset>
+        <legend><div class="group-head"><span class="n">2</span><h2>Finding your way</h2></div></legend>
+
+        <div class="q">
+          <label for="tutorial">Did you finish the opening walkthrough? If you stopped or skipped, where?</label>
+          <textarea id="tutorial" data-q="Tutorial" rows="2"></textarea>
+        </div>
+
+        <div class="q">
+          <label for="lost">Was there ever a moment you did not know what to do next? <span class="star">most useful answer</span></label>
+          <p class="hint">Anything that made you hesitate, guess, or go looking for a button.</p>
+          <textarea id="lost" data-q="Moments of confusion" rows="3"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><div class="group-head"><span class="n">3</span><h2>Bloom and the two styles</h2></div></legend>
+
+        <div class="q">
+          <label for="bloom">How did earning Bloom feel &mdash; fair, too slow, or too generous?</label>
+          <p class="hint">Bloom is what you get for retiring a colony, spent in the shop.</p>
+          <textarea id="bloom" data-q="Bloom economy" rows="2"></textarea>
+        </div>
+
+        <div class="q">
+          <label for="zen">Did you try Zen mode? If so, which did you prefer and why?</label>
+          <p class="hint">Zen has no cap and no scoring. You switch styles on the main menu.</p>
+          <textarea id="zen" data-q="Zen vs Run" rows="2"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><div class="group-head"><span class="n">4</span><h2>The verdict</h2></div></legend>
+
+        <div class="q">
+          <label for="kept-playing">What made you want to keep playing?</label>
+          <textarea id="kept-playing" data-q="What kept you playing" rows="2"></textarea>
+        </div>
+
+        <div class="q">
+          <label for="stopped">What made you put it down?</label>
+          <textarea id="stopped" data-q="What made you stop" rows="2"></textarea>
+        </div>
+
+        <div class="q">
+          <label for="broken">Did anything break, freeze, look wrong, or annoy you?</label>
+          <textarea id="broken" data-q="Bugs and annoyances" rows="3"></textarea>
+        </div>
+
+        <div class="q">
+          <label for="again">Would you open it again tomorrow? Be honest.</label>
+          <textarea id="again" data-q="Would you play again" rows="2"></textarea>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><div class="group-head"><span class="n">5</span><h2>What you want next</h2></div></legend>
+
+        <div class="q">
+          <label id="pickslabel">Which of these would you most want?</label>
+          <p class="hint">Tick as many as you like. Your votes decide what gets built first.</p>
+          <div class="picks" role="group" aria-labelledby="pickslabel">
+            <label class="pick"><input type="checkbox" data-pick="Traits and inheritance"><span><b>Bloblings that pass traits to their children</b><i>Breed a bloodline: hardier eaters, tidier blobs, sunnier moods.</i></span></label>
+            <label class="pick"><input type="checkbox" data-pick="Run events"><span><b>Surprises while a colony lives</b><i>A wanderer asks to join, a berry bloom, a cold snap. You choose how to react.</i></span></label>
+            <label class="pick"><input type="checkbox" data-pick="Weather and day night"><span><b>Weather, and day turning to night</b><i>Dawn, dusk, rain, and blobs that slow down in the dark.</i></span></label>
+            <label class="pick"><input type="checkbox" data-pick="Retire boons"><span><b>A choice every time you retire</b><i>Pick one lasting quirk that changes how every colony after plays.</i></span></label>
+            <label class="pick"><input type="checkbox" data-pick="Cosmetics"><span><b>Hats and colours to unlock</b><i>Spend Bloom on how your colony looks, not just how it plays.</i></span></label>
+            <label class="pick"><input type="checkbox" data-pick="Family trees"><span><b>Family trees</b><i>See who descended from your very first blobling.</i></span></label>
+            <label class="pick"><input type="checkbox" data-pick="Shareable colony card"><span><b>A shareable picture of your colony</b><i>One image with your best run on it, ready to post.</i></span></label>
+            <label class="pick"><input type="checkbox" data-pick="Adaptive music"><span><b>Music that follows the mood</b><i>The soundtrack thickens as the colony grows and softens when it struggles.</i></span></label>
+          </div>
+        </div>
+
+        <div class="q">
+          <label for="wish">Anything you wish it did that is not on that list?</label>
+          <textarea id="wish" data-q="Wishes" rows="2"></textarea>
+        </div>
+      </fieldset>
+
+    </form>
+
+    <section class="send">
+      <h2>Sending it back</h2>
       <p>
-        The colony sim underneath is finished. What comes next depends a lot on what you
-        all say above, but the shape of it looks like this.
+        Nothing here is uploaded anywhere. Your answers are kept in this browser as you
+        type, and nowhere else. Press the button, they get copied as plain text, and you
+        paste them wherever we are talking.
       </p>
-    </div>
-    <div class="next">
-      <div><p><b>More reason to start again.</b> Every colony should feel different from the last, through the traits your bloblings inherit and the surprises that turn up while they live.</p></div>
-      <div><p><b>A world that moves.</b> Weather and a day-night cycle, so a colony at dusk does not look like a colony at noon.</p></div>
-      <div><p><b>Something to show for it.</b> Hats, colours and family trees, so a long-lived colony carries its history visibly.</p></div>
-      <div><p><b>Nothing that nags.</b> No timers, no energy, no punishment for being away, and no ads that interrupt you. Your colony simply naps while the app is closed.</p></div>
-    </div>
-    <p class="thanks">Genuinely, thank you for playing something unfinished. It helps more than you would think.</p>
-  </section>
+      <div class="actions">
+        <button type="button" class="gold" id="copy">Copy my answers</button>
+        <span class="said" id="said" role="status" aria-live="polite"></span>
+      </div>
+    </section>
 
+    <section>
+      <h2>Where it is heading</h2>
+      <ul class="next">
+        <li><p><b>More reason to start again.</b> Every colony should feel different from the last, through the traits your bloblings inherit and the surprises that turn up while they live.</p></li>
+        <li><p><b>A world that moves.</b> Weather and a day-night cycle, so a colony at dusk does not look like a colony at noon.</p></li>
+        <li><p><b>Something to show for it.</b> Hats, colours and family trees, so a long-lived colony carries its history visibly.</p></li>
+        <li><p><b>Nothing that nags.</b> No timers, no energy, no punishment for being away, and no ads that interrupt you. Your colony simply naps while the app is closed.</p></li>
+      </ul>
+    </section>
+
+    <p class="thanks">Genuinely, thank you for playing something unfinished. It helps more than you would think.</p>
+
+  </main>
+
+  <footer>
+    <span>Bloblings &mdash; made by beMAD</span>
+    <span>Currently in closed testing on Android</span>
+  </footer>
+</div>
+
+<div class="rail" id="rail">
+  <div class="wrap inner">
+    <div class="meter">
+      <span class="count" id="count"></span>
+      <div class="track"><div id="bar"></div></div>
+    </div>
+    <button type="button" class="gold" id="railcopy">Copy</button>
+  </div>
 </div>
 
 <script>
-  (function () {
-    var button = document.getElementById("copy");
-    var said = document.getElementById("said");
+(function () {
+  "use strict";
 
-    button.addEventListener("click", function () {
-      var lines = ["Bloblings beta feedback", ""];
+  var STORE = "bloblings-beta-v1";
+  var fields = Array.prototype.slice.call(document.querySelectorAll("[data-q]"));
+  var picks = Array.prototype.slice.call(document.querySelectorAll("[data-pick]"));
+  var total = fields.length + 1; //the wishlist counts as one
 
-      document.querySelectorAll("[data-q]").forEach(function (field) {
-        var answer = field.value.trim();
-        if (answer.length === 0) {
-          return;
-        }
-        lines.push(field.getAttribute("data-q") + ":");
-        lines.push(answer);
-        lines.push("");
-      });
+  var $ = function (id) { return document.getElementById(id); };
 
-      var picked = [];
-      document.querySelectorAll("[data-pick]").forEach(function (box) {
-        if (box.checked) {
-          picked.push(box.getAttribute("data-pick"));
-        }
-      });
-      if (picked.length > 0) {
-        lines.push("Wants next: " + picked.join(", "));
-        lines.push("");
-      }
+  //---- textareas that grow with what you write, so nothing is typed into a slot
 
-      if (lines.length === 2) {
-        said.textContent = "Nothing filled in yet.";
-        return;
-      }
+  function grow(box) {
+    if (box.tagName !== "TEXTAREA") { return; }
+    box.style.height = "auto";
+    box.style.height = box.scrollHeight + "px";
+  }
 
-      var text = lines.join("\n");
-      var done = function () { said.textContent = "Copied. Paste it wherever we are talking."; };
-      var failed = function () { said.textContent = "Could not copy. Select the page and copy by hand."; };
+  //---- saved in this browser only, because a backgrounded phone tab loses everything
 
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, failed);
-        return;
-      }
+  function save() {
+    var bag = { fields: {}, picks: [] };
+    fields.forEach(function (f) { if (f.value.trim()) { bag.fields[f.id] = f.value; } });
+    picks.forEach(function (p) { if (p.checked) { bag.picks.push(p.getAttribute("data-pick")); } });
+    try {
+      if (!Object.keys(bag.fields).length && !bag.picks.length) { localStorage.removeItem(STORE); }
+      else { localStorage.setItem(STORE, JSON.stringify(bag)); }
+    } catch (e) { /* private mode, or a full disk: the form still works */ }
+  }
 
-      var pad = document.createElement("textarea");
-      pad.value = text;
-      pad.style.position = "fixed";
-      pad.style.opacity = "0";
-      document.body.appendChild(pad);
-      pad.select();
-      try {
-        document.execCommand("copy");
-        done();
-      } catch (error) {
-        failed();
-      }
-      document.body.removeChild(pad);
+  function restore() {
+    var bag;
+    try { bag = JSON.parse(localStorage.getItem(STORE) || "null"); } catch (e) { bag = null; }
+    if (!bag) { return 0; }
+    var back = 0;
+    fields.forEach(function (f) {
+      if (bag.fields && typeof bag.fields[f.id] === "string") { f.value = bag.fields[f.id]; back++; grow(f); }
     });
-  })();
+    if (bag.picks && bag.picks.length) {
+      picks.forEach(function (p) {
+        if (bag.picks.indexOf(p.getAttribute("data-pick")) >= 0) { p.checked = true; back++; }
+      });
+    }
+    return back;
+  }
+
+  //---- progress, shown both on the rail and beside each answered question
+
+  function answered() {
+    var n = 0;
+    fields.forEach(function (f) {
+      var has = f.value.trim().length > 0;
+      f.closest(".q").classList.toggle("done", has);
+      if (has) { n++; }
+    });
+    if (picks.some(function (p) { return p.checked; })) { n++; }
+    return n;
+  }
+
+  function tick() {
+    var n = answered();
+    $("bar").style.width = Math.round((n / total) * 100) + "%";
+    $("count").textContent = n === 0
+      ? "Nothing answered yet"
+      : n + " of " + total + " answered";
+    $("rail").classList.toggle("up", n > 0);
+    $("railcopy").disabled = n === 0;
+    return n;
+  }
+
+  //---- what actually lands on the clipboard
+
+  function build() {
+    var lines = ["Bloblings beta feedback", ""];
+    fields.forEach(function (f) {
+      var answer = f.value.trim();
+      if (!answer) { return; }
+      lines.push(f.getAttribute("data-q") + ":");
+      lines.push(answer);
+      lines.push("");
+    });
+    var chosen = picks.filter(function (p) { return p.checked; })
+                      .map(function (p) { return p.getAttribute("data-pick"); });
+    if (chosen.length) {
+      lines.push("Wants next: " + chosen.join(", "));
+      lines.push("");
+    }
+    return lines.length === 2 ? "" : lines.join("\n");
+  }
+
+  function say(text) {
+    $("said").textContent = text;
+    clearTimeout(say.timer);
+    say.timer = setTimeout(function () { $("said").textContent = ""; }, 6000);
+  }
+
+  function copy() {
+    var text = build();
+    if (!text) { say("Nothing filled in yet."); return; }
+
+    var done = function () { say("Copied. Paste it wherever we are talking."); };
+    var failed = function () { say("Could not copy. Select the page and copy by hand."); };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, failed);
+      return;
+    }
+    var pad = document.createElement("textarea");
+    pad.value = text;
+    pad.style.position = "fixed";
+    pad.style.opacity = "0";
+    document.body.appendChild(pad);
+    pad.select();
+    try { document.execCommand("copy"); done(); } catch (e) { failed(); }
+    document.body.removeChild(pad);
+  }
+
+  //---- wiring
+
+  fields.concat(picks).forEach(function (el) {
+    el.addEventListener("input", function () {
+      grow(el);
+      tick();
+      clearTimeout(save.timer);
+      save.timer = setTimeout(save, 300);
+    });
+    el.addEventListener("change", function () { tick(); save(); });
+  });
+
+  picks.forEach(function (p) {
+    var box = p.closest(".pick");
+    var paint = function () { box.classList.toggle("on", p.checked); };
+    p.addEventListener("change", paint);
+    paint();
+  });
+
+  $("copy").addEventListener("click", copy);
+  $("railcopy").addEventListener("click", copy);
+
+  $("wipe").addEventListener("click", function () {
+    if (!confirm("Clear everything you have written and start again?")) { return; }
+    try { localStorage.removeItem(STORE); } catch (e) {}
+    fields.forEach(function (f) { f.value = ""; grow(f); });
+    picks.forEach(function (p) { p.checked = false; p.dispatchEvent(new Event("change")); });
+    $("kept").hidden = true;
+    tick();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  //the tab can go away at any moment on a phone, so take one last copy on the way out
+  window.addEventListener("pagehide", save);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") { save(); }
+  });
+
+  var back = restore();
+  if (back > 0) {
+    $("keptsaid").textContent = "Picked up where you left off. Nothing was lost.";
+    $("kept").hidden = false;
+  }
+  fields.forEach(grow);
+  tick();
+})();
 </script>
 </body>
 </html>
