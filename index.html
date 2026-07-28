@@ -302,6 +302,12 @@
     padding: clamp(1.15rem, 3.5vw, 1.5rem);
   }
 
+  .empty {
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-top: 1.2rem;
+  }
+
   .post time {
     font-family: var(--mono);
     font-size: 0.74rem;
@@ -495,24 +501,20 @@
     <h2>Updates</h2>
     <p>News as the game grows. Newest first.</p>
 
-    <!-- To add an update, copy one <article class="post"> block to the TOP of the list
-         below and change the date, the title and the text. Nothing else needs editing. -->
+    <p class="empty">Nothing yet. The first one lands when the beta opens.</p>
+
+    <!-- To add an update, uncomment the block below, or copy it to the TOP of the list
+         and change the date, the title and the text. Nothing else needs editing.
+         Remove the "empty" paragraph above once there is a real post here. -->
     <div class="posts">
 
+      <!--
       <article class="post">
-        <time datetime="2026-07-28">28 July 2026</time>
-        <h3>The beta is open</h3>
-        <p>
-          Everything is in: bloblings hatch, grow up, take on jobs, raise families and
-          eventually pass on, and a colony you retire makes the next one stronger. There
-          are two ways to play, and the game speaks both English and Greek.
-        </p>
-        <p>
-          If you are one of the testers, thank you &mdash; genuinely. The
-          <a href="beta.html">feedback page</a> is the fastest way to tell me what is
-          working and what is not.
-        </p>
+        <time datetime="2026-01-01">1 January 2026</time>
+        <h3>Headline goes here</h3>
+        <p>What changed, in a sentence or two.</p>
       </article>
+      -->
 
     </div>
   </section>
