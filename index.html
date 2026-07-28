@@ -374,36 +374,6 @@
   .beta b { color: var(--ink); font-weight: 650; }
   .beta .cta { align-self: flex-start; margin-top: 0; }
 
-  /* updates */
-
-  .empty { color: var(--ink-faint); font-style: italic; margin-top: 1.4rem; }
-
-  .posts { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.6rem; }
-
-  .post {
-    background: var(--ground);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: clamp(1.2rem, 3.5vw, 1.65rem);
-  }
-
-  .post time {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.11em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .post h3 {
-    font-family: var(--display);
-    font-size: 1.3rem;
-    font-weight: 700;
-    letter-spacing: -0.018em;
-    margin: 0.3rem 0 0.7rem;
-    text-wrap: balance;
-  }
-
   /* coming next */
 
   .next { display: flex; flex-direction: column; gap: 0.95rem; margin-top: 1.7rem; }
@@ -474,7 +444,7 @@
       <a class="home" href="index.html"><img src="icon.png" alt="Bloblings home"></a>
       <div class="nav-links">
         <a href="index.html" aria-current="page">Home</a>
-        <a href="#updates">Updates</a>
+        <a href="updates.html">Updates</a>
         <a href="beta.html">Beta</a>
       </div>
     </nav>
@@ -598,31 +568,7 @@
     </div>
   </section>
 
-  <section class="band" id="updates">
-    <div class="wrap">
-      <h2>Updates</h2>
-      <p>News as the game grows. Newest first.</p>
-
-    <p class="empty">Nothing yet. The first one lands when the beta opens.</p>
-
-    <!-- To add an update, uncomment the block below, or copy it to the TOP of the list
-         and change the date, the title and the text. Nothing else needs editing.
-         Remove the "empty" paragraph above once there is a real post here. -->
-    <div class="posts">
-
-      <!--
-      <article class="post">
-        <time datetime="2026-01-01">1 January 2026</time>
-        <h3>Headline goes here</h3>
-        <p>What changed, in a sentence or two.</p>
-      </article>
-      -->
-
-    </div>
-    </div>
-  </section>
-
-  <section>
+  <section class="band">
     <div class="wrap">
       <h2>Where it is heading</h2>
       <ul class="next">

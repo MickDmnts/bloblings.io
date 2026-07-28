@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloblings — updates</title>
+<meta name="description" content="What is changing in Bloblings, newest first.">
+<meta property="og:title" content="Bloblings — updates">
+<meta property="og:description" content="What is changing in Bloblings, newest first.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#131c16">
+<link rel="icon" href="icon.png">
+<style>
+  :root {
+    --ground: #f3f6ec;
+    --surface: #ffffff;
+    --line: #e0e7d3;
+    --ink: #17251a;
+    --ink-soft: #55654e;
+    --ink-faint: #7c8b74;
+    --accent: #8a6a00;
+    --accent-fill: #f2c94c;
+    --blob: #6f9a33;
+    --sky-top: #e2edcf;
+    --sky-bottom: #edf3df;
+    --shade: rgba(23, 37, 26, 0.09);
+    --nav-well: rgba(255, 255, 255, 0.55);
+    --nav-edge: rgba(23, 37, 26, 0.08);
+    --nav-wash: rgba(242, 201, 76, 0.3);
+    --nav-halo: rgba(242, 201, 76, 0.5);
+
+    --display: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", "Trebuchet MS", system-ui, sans-serif;
+    --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #131c16; --surface: #1c2820; --line: #2c3a2e;
+      --ink: #e9f2d8; --ink-soft: #a3b699; --ink-faint: #7d9074;
+      --accent: #f2c94c; --accent-fill: #f2c94c; --blob: #b3d967;
+      --sky-top: #26351f; --sky-bottom: #19241a;
+      --shade: rgba(0, 0, 0, 0.28);
+      --nav-well: rgba(0, 0, 0, 0.2);
+      --nav-edge: rgba(233, 242, 216, 0.09);
+      --nav-wash: rgba(242, 201, 76, 0.18);
+      --nav-halo: rgba(242, 201, 76, 0.45);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #131c16; --surface: #1c2820; --line: #2c3a2e;
+    --ink: #e9f2d8; --ink-soft: #a3b699; --ink-faint: #7d9074;
+    --accent: #f2c94c; --accent-fill: #f2c94c; --blob: #b3d967;
+    --sky-top: #26351f; --sky-bottom: #19241a;
+    --shade: rgba(0, 0, 0, 0.28);
+    --nav-well: rgba(0, 0, 0, 0.2);
+    --nav-edge: rgba(233, 242, 216, 0.09);
+    --nav-wash: rgba(242, 201, 76, 0.18);
+    --nav-halo: rgba(242, 201, 76, 0.45);
+  }
+
+  :root[data-theme="light"] {
+    --ground: #f3f6ec; --surface: #ffffff; --line: #e0e7d3;
+    --ink: #17251a; --ink-soft: #55654e; --ink-faint: #7c8b74;
+    --accent: #8a6a00; --accent-fill: #f2c94c; --blob: #6f9a33;
+    --sky-top: #e2edcf; --sky-bottom: #edf3df;
+    --shade: rgba(23, 37, 26, 0.09);
+    --nav-well: rgba(255, 255, 255, 0.55);
+    --nav-edge: rgba(23, 37, 26, 0.08);
+    --nav-wash: rgba(242, 201, 76, 0.3);
+    --nav-halo: rgba(242, 201, 76, 0.5);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; padding: 0; }
+  ul, ol { list-style: none; }
+  img, svg { display: block; max-width: 100%; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); }
+
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 2rem); }
+
+  /* the same meadow the front page opens on, kept short since this page is a list */
+
+  .hero {
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
+    border-radius: 0 0 clamp(1.75rem, 6vw, 3rem) clamp(1.75rem, 6vw, 3rem);
+    padding-bottom: clamp(2.25rem, 6vw, 3.25rem);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 0;
+  }
+
+  .home { display: block; border-radius: 10px; }
+  .home img { width: 34px; height: 34px; border-radius: 10px; transition: box-shadow 0.14s ease; }
+  .home:hover img { box-shadow: 0 0 0 3px var(--nav-halo); }
+  .home:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; }
+
+  /* one gold pill marks where you are, the rest wash gold as you pass over them */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.25rem;
+    background: var(--nav-well);
+    border: 1px solid var(--nav-edge);
+    border-radius: 999px;
+  }
+
+  .nav-links a {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 0.32rem 0.9rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background 0.14s ease, color 0.14s ease;
+  }
+
+  .nav-links a:hover { color: var(--ink); background: var(--nav-wash); }
+
+  /* the page you are on is tinted, not filled: solid gold stays reserved for actions */
+  .nav-links a[aria-current] {
+    color: var(--accent);
+    background: var(--nav-wash);
+    font-weight: 700;
+  }
+
+  .nav-links a[aria-current]:hover { color: var(--accent); background: var(--nav-wash); }
+  .nav-links a:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+
+  @media (max-width: 380px) {
+    .nav-links a { padding: 0.32rem 0.7rem; font-size: 0.84rem; }
+  }
+
+  /* masthead */
+
+  .mast {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .mast-top { display: flex; align-items: center; gap: 1rem; }
+
+  .blob { flex: none; width: 64px; height: 64px; animation: bob 4.2s ease-in-out infinite; }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) scale(1, 1); }
+    50% { transform: translateY(-4px) scale(0.985, 1.015); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blob { animation: none; }
+    .home img, .nav-links a { transition: none; }
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.71rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-size: clamp(2.1rem, 6vw, 2.9rem);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    margin-top: 0.15rem;
+  }
+
+  .lede { font-size: 1.08rem; color: var(--ink-soft); max-width: 54ch; }
+
+  /* the list */
+
+  main { padding: clamp(2.5rem, 7vw, 3.5rem) 0 clamp(3rem, 8vw, 4.5rem); }
+
+  .empty {
+    color: var(--ink-faint);
+    font-style: italic;
+    max-width: 54ch;
+  }
+
+  .posts { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .post {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(1.2rem, 3.5vw, 1.65rem);
+  }
+
+  .post time {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .post h3 {
+    font-family: var(--display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.018em;
+    margin: 0.3rem 0 0.7rem;
+    text-wrap: balance;
+  }
+
+  .post p { color: var(--ink-soft); max-width: 60ch; }
+  .post p + p { margin-top: 0.9rem; }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 2rem 0 3rem;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <radialGradient id="body" cx="38%" cy="32%" r="72%">
+      <stop offset="0%" stop-color="#cfe98a" />
+      <stop offset="62%" stop-color="#b3d967" />
+      <stop offset="100%" stop-color="#8fb84c" />
+    </radialGradient>
+    <g id="blobling">
+      <ellipse cx="32" cy="57" rx="15" ry="3.4" fill="#000" opacity="0.18" />
+      <ellipse cx="27.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(-26 27.5 15.5)" />
+      <ellipse cx="36.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(26 36.5 15.5)" />
+      <ellipse cx="32" cy="35" rx="23" ry="24" fill="url(#body)" />
+      <ellipse cx="21.5" cy="40" rx="5" ry="3.4" fill="#e5896f" opacity="0.5" />
+      <ellipse cx="42.5" cy="40" rx="5" ry="3.4" fill="#e5896f" opacity="0.5" />
+      <ellipse cx="24" cy="31" rx="2.9" ry="3.8" fill="#1c2415" />
+      <ellipse cx="40" cy="31" rx="2.9" ry="3.8" fill="#1c2415" />
+      <circle cx="22.9" cy="29.4" r="1.05" fill="#fff" />
+      <circle cx="38.9" cy="29.4" r="1.05" fill="#fff" />
+    </g>
+  </defs>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <nav>
+      <a class="home" href="index.html"><img src="icon.png" alt="Bloblings home"></a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="updates.html" aria-current="page">Updates</a>
+        <a href="beta.html">Beta</a>
+      </div>
+    </nav>
+
+    <div class="mast">
+      <div class="mast-top">
+        <svg class="blob" viewBox="0 0 64 64" role="img" aria-label="A blobling">
+          <use href="#blobling" />
+        </svg>
+        <div>
+          <div class="eyebrow">News</div>
+          <h1>Updates</h1>
+        </div>
+      </div>
+      <p class="lede">
+        What changes in Bloblings, as it changes. Newest first.
+      </p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <p class="empty">Nothing yet. The first one lands when the beta opens.</p>
+
+    <!-- Posts go here, newest at the top. The posting tool writes them in for you;
+         to add one by hand, copy the commented block below and change the date,
+         the title and the text. Remove the "empty" paragraph above once there is
+         a real post here. -->
+    <div class="posts">
+
+      <!--
+      <article class="post">
+        <time datetime="2026-01-01">1 January 2026</time>
+        <h3>Headline goes here</h3>
+        <p>What changed, in a sentence or two.</p>
+      </article>
+      -->
+
+    </div>
+
+  </div>
+</main>
+
+<div class="wrap">
+  <footer>
+    <span>Bloblings &mdash; made by beMAD</span>
+    <span>Currently in closed testing on Android</span>
+  </footer>
+</div>
+
+</body>
+</html>
