@@ -8,21 +8,24 @@
 <meta property="og:title" content="Bloblings">
 <meta property="og:description" content="A tiny colony sim for Android. Hatch them, feed them, keep them happy.">
 <meta property="og:type" content="website">
+<meta name="theme-color" content="#131c16">
 <link rel="icon" href="icon.png">
 <style>
   :root {
-    --ground: #f2f5ea;
-    --surface: #fbfcf6;
-    --raise: #ffffff;
-    --line: #dbe3cf;
-    --line-soft: #e7ecdd;
+    --ground: #f3f6ec;
+    --surface: #ffffff;
+    --line: #e0e7d3;
     --ink: #17251a;
     --ink-soft: #55654e;
     --ink-faint: #7c8b74;
     --accent: #8a6a00;
     --accent-fill: #f2c94c;
     --blob: #6f9a33;
-    --warn: #a8402d;
+    --sky-top: #e2edcf;
+    --sky-bottom: #edf3df;
+    --petal-a: #d98b6f;
+    --petal-b: #9b8fd1;
+    --shade: rgba(23, 37, 26, 0.09);
 
     --display: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", "Trebuchet MS", system-ui, sans-serif;
     --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -31,229 +34,252 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --ground: #131c16; --surface: #1b2820; --raise: #22311f;
-      --line: #2e3d30; --line-soft: #26332a;
+      --ground: #131c16; --surface: #1c2820; --line: #2c3a2e;
       --ink: #e9f2d8; --ink-soft: #a3b699; --ink-faint: #7d9074;
-      --accent: #f2c94c; --accent-fill: #f2c94c; --blob: #b3d967; --warn: #d96c5a;
+      --accent: #f2c94c; --accent-fill: #f2c94c; --blob: #b3d967;
+      --sky-top: #26351f; --sky-bottom: #19241a;
+      --petal-a: #e5896f; --petal-b: #b8a9e8;
+      --shade: rgba(0, 0, 0, 0.28);
     }
   }
 
   :root[data-theme="dark"] {
-    --ground: #131c16; --surface: #1b2820; --raise: #22311f;
-    --line: #2e3d30; --line-soft: #26332a;
+    --ground: #131c16; --surface: #1c2820; --line: #2c3a2e;
     --ink: #e9f2d8; --ink-soft: #a3b699; --ink-faint: #7d9074;
-    --accent: #f2c94c; --accent-fill: #f2c94c; --blob: #b3d967; --warn: #d96c5a;
+    --accent: #f2c94c; --accent-fill: #f2c94c; --blob: #b3d967;
+    --sky-top: #26351f; --sky-bottom: #19241a;
+    --petal-a: #e5896f; --petal-b: #b8a9e8;
+    --shade: rgba(0, 0, 0, 0.28);
   }
 
   :root[data-theme="light"] {
-    --ground: #f2f5ea; --surface: #fbfcf6; --raise: #ffffff;
-    --line: #dbe3cf; --line-soft: #e7ecdd;
+    --ground: #f3f6ec; --surface: #ffffff; --line: #e0e7d3;
     --ink: #17251a; --ink-soft: #55654e; --ink-faint: #7c8b74;
-    --accent: #8a6a00; --accent-fill: #f2c94c; --blob: #6f9a33; --warn: #a8402d;
+    --accent: #8a6a00; --accent-fill: #f2c94c; --blob: #6f9a33;
+    --sky-top: #e2edcf; --sky-bottom: #edf3df;
+    --petal-a: #d98b6f; --petal-b: #9b8fd1;
+    --shade: rgba(23, 37, 26, 0.09);
   }
 
   *, *::before, *::after { box-sizing: border-box; }
   * { margin: 0; padding: 0; }
-  ul { list-style: none; }
+  ul, ol { list-style: none; }
   img, svg { display: block; max-width: 100%; }
-  a { color: var(--accent); }
-  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; }
 
   body {
     background: var(--ground);
     color: var(--ink);
     font-family: var(--body);
-    font-size: 1rem;
-    line-height: 1.65;
+    font-size: 1.02rem;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
 
-  .wrap {
-    max-width: 50rem;
-    margin: 0 auto;
-    padding: 0 clamp(1.15rem, 4vw, 2rem) 5rem;
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; border-radius: 4px; }
+
+  .wrap { max-width: 46rem; margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 2rem); }
+
+  /* the meadow the page opens on */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
+    border-radius: 0 0 clamp(1.75rem, 6vw, 3rem) clamp(1.75rem, 6vw, 3rem);
+    padding-bottom: clamp(3rem, 8vw, 4.5rem);
   }
 
-  /* nav */
+  /* the rest of the colony, grazing somewhere behind */
+  .far { position: absolute; opacity: 0.14; pointer-events: none; }
+  .far.a { width: 56px; left: 6%;  top: 62%; animation: bob 5.6s ease-in-out infinite; }
+  .far.b { width: 34px; left: 85%; top: 46%; animation: bob 6.8s ease-in-out infinite 0.9s; }
+  .far.c { width: 44px; left: 76%; top: 74%; animation: bob 6.1s ease-in-out infinite 1.7s; }
+  .far.d { width: 26px; left: 17%; top: 34%; animation: bob 7.4s ease-in-out infinite 2.4s; }
+
+  @media (max-width: 700px) {
+    .far.b, .far.d { display: none; }
+    .far.a { left: 2%; }
+    .far.c { left: 84%; }
+  }
 
   nav {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1.25rem 0;
-    border-bottom: 1px solid var(--line);
+    padding: 1.1rem 0;
   }
 
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--display);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    text-decoration: none;
-  }
+  nav > img { width: 34px; height: 34px; border-radius: 10px; }
 
-  .brand img { width: 34px; height: 34px; border-radius: 8px; }
+  .nav-links { display: flex; gap: 1.4rem; font-size: 0.95rem; }
+  .nav-links a { color: var(--ink-soft); text-decoration: none; }
+  .nav-links a:hover { color: var(--accent); }
 
-  .nav-links { display: flex; gap: 1.1rem; font-size: 0.94rem; }
-
-  /* hero */
-
-  .hero {
+  .hero-inner {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 1.15rem;
-    padding: clamp(2.5rem, 8vw, 4.5rem) 0 clamp(2rem, 5vw, 3rem);
+    gap: 0.9rem;
+    padding-top: clamp(1.75rem, 6vw, 3rem);
   }
 
-  .blob { width: clamp(110px, 22vw, 150px); animation: bob 4.2s ease-in-out infinite; }
+  .blob { width: clamp(124px, 24vw, 164px); animation: bob 4.2s ease-in-out infinite; }
 
   @keyframes bob {
     0%, 100% { transform: translateY(0) scale(1, 1); }
     50% { transform: translateY(-7px) scale(0.985, 1.015); }
   }
 
-  @media (prefers-reduced-motion: reduce) { .blob { animation: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .blob, .far { animation: none; }
+  }
 
   .badge {
-    display: inline-block;
     font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 0.71rem;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--accent);
-    border: 1px solid var(--accent-fill);
-    border-radius: 999px;
-    padding: 0.25rem 0.75rem;
   }
 
   h1 {
     font-family: var(--display);
-    font-size: clamp(2.6rem, 9vw, 4.25rem);
-    line-height: 1;
+    font-size: clamp(3rem, 11vw, 4.75rem);
+    line-height: 0.95;
     font-weight: 700;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
   }
 
   .tagline {
-    font-size: clamp(1.1rem, 3vw, 1.35rem);
+    font-size: clamp(1.12rem, 3vw, 1.4rem);
+    line-height: 1.5;
     color: var(--ink-soft);
-    max-width: 34ch;
+    max-width: 30ch;
     text-wrap: balance;
   }
 
   .cta {
     display: inline-block;
-    font-family: var(--body);
-    font-size: 1rem;
     font-weight: 650;
     color: #17251a;
     background: var(--accent-fill);
-    border-radius: 6px;
-    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    padding: 0.72rem 1.75rem;
     text-decoration: none;
-    margin-top: 0.4rem;
+    margin-top: 0.6rem;
+    box-shadow: 0 2px 0 var(--shade);
+    transition: transform 0.12s ease;
   }
 
-  .cta:hover { filter: brightness(1.06); }
+  .cta:hover { transform: translateY(-1px); }
+  .cta:active { transform: translateY(1px); box-shadow: none; }
+  .cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-  /* sections */
+  /* sections alternate, so the page has a pulse rather than one long column */
 
-  section { padding: clamp(2.25rem, 6vw, 3.25rem) 0; border-top: 1px solid var(--line); }
+  section { padding: clamp(2.75rem, 7vw, 4rem) 0; }
+
+  .band { background: var(--surface); border-block: 1px solid var(--line); }
 
   h2 {
     font-family: var(--display);
-    font-size: clamp(1.5rem, 4vw, 1.85rem);
+    font-size: clamp(1.6rem, 4.5vw, 2.05rem);
     font-weight: 700;
-    letter-spacing: -0.015em;
-    line-height: 1.2;
-    margin-bottom: 1rem;
+    letter-spacing: -0.022em;
+    line-height: 1.15;
+    margin-bottom: 1.1rem;
     text-wrap: balance;
   }
 
-  p { max-width: 62ch; color: var(--ink-soft); }
-  p + p { margin-top: 0.9rem; }
+  p { max-width: 60ch; color: var(--ink-soft); }
+  p + p { margin-top: 1rem; }
   p strong { color: var(--ink); font-weight: 600; }
+
+  .lede { font-size: 1.12rem; }
 
   /* the four tools */
 
   .tools {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 0.9rem;
-    margin-top: 1.4rem;
-  }
-
-  .tool {
-    background: var(--surface);
-    border: 1px solid var(--line-soft);
-    border-radius: 8px;
-    padding: 1.1rem 1.15rem;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.6rem 2.25rem;
+    margin-top: 1.9rem;
   }
 
   .tool h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     font-family: var(--display);
-    font-size: 1.05rem;
+    font-size: 1.12rem;
     font-weight: 650;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.25rem;
   }
 
-  .tool p { font-size: 0.95rem; }
+  .tool h3::before {
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--dot, var(--blob));
+    flex: none;
+  }
+
+  .tool p { font-size: 0.97rem; }
 
   /* two styles */
 
-  .styles { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.4rem; }
+  .styles { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 1.1rem; margin-top: 1.8rem; }
 
   .style {
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 1.3rem;
+    border-radius: 16px;
+    padding: 1.5rem;
   }
+
+  .band .style { background: var(--ground); }
 
   .style h3 {
     font-family: var(--display);
-    font-size: 1.2rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    margin-bottom: 0.15rem;
+    letter-spacing: -0.018em;
   }
 
   .style .kind {
+    display: block;
     font-family: var(--mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
+    font-size: 0.69rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-faint);
-    display: block;
-    margin-bottom: 0.6rem;
+    margin: 0.1rem 0 0.7rem;
   }
-
-  .style.seasons { border-left: 3px solid var(--accent-fill); }
-  .style.zen { border-left: 3px solid var(--blob); }
 
   /* promises */
 
-  .promises { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1.2rem; }
+  .promises { display: flex; flex-direction: column; gap: 0.85rem; margin-top: 1.7rem; }
 
   .promises li {
     display: grid;
-    grid-template-columns: 1.2rem 1fr;
-    gap: 0.7rem;
+    grid-template-columns: 1.35rem 1fr;
+    gap: 0.75rem;
     align-items: start;
     color: var(--ink-soft);
-    max-width: 62ch;
+    max-width: 60ch;
   }
 
   .promises li::before {
     content: "\2713";
     color: var(--blob);
     font-weight: 700;
-    line-height: 1.65;
+    line-height: 1.7;
   }
 
   .promises b { color: var(--ink); font-weight: 600; }
@@ -263,95 +289,92 @@
   .beta {
     background: var(--surface);
     border: 1px solid var(--line);
-    border-left: 3px solid var(--accent-fill);
-    border-radius: 8px;
-    padding: clamp(1.3rem, 4vw, 1.9rem);
-    margin-top: 1.3rem;
+    border-radius: 16px;
+    padding: clamp(1.4rem, 4vw, 2rem);
+    margin-top: 1.7rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.15rem;
   }
 
-  .beta ol { counter-reset: step; display: flex; flex-direction: column; gap: 0.7rem; list-style: none; }
+  .beta ol { counter-reset: step; display: flex; flex-direction: column; gap: 0.9rem; }
 
   .beta li {
     counter-increment: step;
     display: grid;
-    grid-template-columns: 1.5rem 1fr;
-    gap: 0.7rem;
+    grid-template-columns: 1.9rem 1fr;
+    gap: 0.8rem;
     color: var(--ink-soft);
   }
 
   .beta li::before {
     content: counter(step);
     font-family: var(--mono);
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--accent);
+    line-height: 2;
   }
 
   .beta b { color: var(--ink); font-weight: 650; }
+  .beta .cta { align-self: flex-start; margin-top: 0; }
 
   /* updates */
 
-  .posts { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.4rem; }
+  .empty { color: var(--ink-faint); font-style: italic; margin-top: 1.4rem; }
+
+  .posts { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.6rem; }
 
   .post {
-    background: var(--surface);
-    border: 1px solid var(--line-soft);
-    border-radius: 8px;
-    padding: clamp(1.15rem, 3.5vw, 1.5rem);
-  }
-
-  .empty {
-    color: var(--ink-faint);
-    font-style: italic;
-    margin-top: 1.2rem;
+    background: var(--ground);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(1.2rem, 3.5vw, 1.65rem);
   }
 
   .post time {
     font-family: var(--mono);
-    font-size: 0.74rem;
-    letter-spacing: 0.09em;
+    font-size: 0.72rem;
+    letter-spacing: 0.11em;
     text-transform: uppercase;
     color: var(--accent);
   }
 
   .post h3 {
     font-family: var(--display);
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    letter-spacing: -0.01em;
-    margin: 0.3rem 0 0.6rem;
+    letter-spacing: -0.018em;
+    margin: 0.3rem 0 0.7rem;
     text-wrap: balance;
   }
 
   /* coming next */
 
-  .next { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.2rem; }
+  .next { display: flex; flex-direction: column; gap: 0.95rem; margin-top: 1.7rem; }
 
   .next li {
     display: grid;
-    grid-template-columns: 0.5rem 1fr;
-    gap: 0.85rem;
+    grid-template-columns: 0.55rem 1fr;
+    gap: 0.95rem;
     align-items: start;
     color: var(--ink-soft);
-    max-width: 62ch;
+    max-width: 60ch;
   }
 
   .next li::before {
     content: "";
-    width: 0.5rem; height: 0.5rem;
+    width: 0.55rem; height: 0.55rem;
     border-radius: 50%;
     background: var(--blob);
-    margin-top: 0.62rem;
+    margin-top: 0.66rem;
   }
 
   .next b { color: var(--ink); font-weight: 650; }
 
   footer {
     border-top: 1px solid var(--line);
-    padding-top: 1.6rem;
-    margin-top: clamp(2rem, 6vw, 3rem);
+    padding: 2rem 0 3rem;
     color: var(--ink-faint);
     font-size: 0.9rem;
     display: flex;
@@ -363,28 +386,14 @@
 </head>
 <body>
 
-<div class="wrap">
-
-  <nav>
-    <a class="brand" href="index.html">
-      <img src="icon.png" alt="">
-      Bloblings
-    </a>
-    <div class="nav-links">
-      <a href="#updates">Updates</a>
-      <a href="beta.html">Beta</a>
-    </div>
-  </nav>
-
-  <header class="hero">
-    <svg class="blob" viewBox="0 0 64 64" role="img" aria-label="A blobling">
-      <defs>
-        <radialGradient id="body" cx="38%" cy="32%" r="72%">
-          <stop offset="0%" stop-color="#cfe98a" />
-          <stop offset="62%" stop-color="#b3d967" />
-          <stop offset="100%" stop-color="#8fb84c" />
-        </radialGradient>
-      </defs>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <radialGradient id="body" cx="38%" cy="32%" r="72%">
+      <stop offset="0%" stop-color="#cfe98a" />
+      <stop offset="62%" stop-color="#b3d967" />
+      <stop offset="100%" stop-color="#8fb84c" />
+    </radialGradient>
+    <g id="blobling">
       <ellipse cx="32" cy="57" rx="15" ry="3.4" fill="#000" opacity="0.18" />
       <ellipse cx="27.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(-26 27.5 15.5)" />
       <ellipse cx="36.5" cy="15.5" rx="7" ry="2.8" fill="#70ad54" transform="rotate(26 36.5 15.5)" />
@@ -395,123 +404,155 @@
       <ellipse cx="40" cy="31" rx="2.9" ry="3.8" fill="#1c2415" />
       <circle cx="22.9" cy="29.4" r="1.05" fill="#fff" />
       <circle cx="38.9" cy="29.4" r="1.05" fill="#fff" />
-    </svg>
-    <span class="badge">Closed beta &middot; Android</span>
-    <h1>Bloblings</h1>
-    <p class="tagline">Hatch a colony of small round creatures and keep them fed, clean and happy.</p>
-    <a class="cta" href="beta.html">Join the beta</a>
-  </header>
+    </g>
+  </defs>
+</svg>
+
+<header class="hero">
+  <svg class="far a" viewBox="0 0 64 64" aria-hidden="true"><use href="#blobling" /></svg>
+  <svg class="far b" viewBox="0 0 64 64" aria-hidden="true"><use href="#blobling" /></svg>
+  <svg class="far c" viewBox="0 0 64 64" aria-hidden="true"><use href="#blobling" /></svg>
+  <svg class="far d" viewBox="0 0 64 64" aria-hidden="true"><use href="#blobling" /></svg>
+
+  <div class="wrap">
+    <nav>
+      <img src="icon.png" alt="">
+      <div class="nav-links">
+        <a href="#updates">Updates</a>
+        <a href="beta.html">Beta</a>
+      </div>
+    </nav>
+
+    <div class="hero-inner">
+      <svg class="blob" viewBox="0 0 64 64" role="img" aria-label="A blobling">
+        <use href="#blobling" />
+      </svg>
+      <span class="badge">Closed beta &middot; Android</span>
+      <h1>Bloblings</h1>
+      <p class="tagline">Hatch a colony of small round creatures and keep them fed, clean and happy.</p>
+      <a class="cta" href="beta.html">Join the beta</a>
+    </div>
+  </div>
+</header>
+
+<main>
 
   <section>
-    <h2>A colony that grows while you watch it</h2>
-    <p>
-      It starts with one egg. Tap it until it hatches, and a blobling wanders out into
-      the meadow. It gets hungry. It gets lonely. It leaves a mess. Look after it and it
-      grows up, and a well fed, happy blobling eventually lays an egg of its own.
-    </p>
-    <p>
-      Grown bloblings take on <strong>jobs</strong> &mdash; farming, cleaning, cheering
-      the others up &mdash; so a colony you have tended well starts running itself while
-      you watch. They age. Elders slow down, and eventually pass on peacefully, which
-      makes room for the next generation.
-    </p>
-    <p>
-      No two colonies go the same way. Some grow fat and lazy on a well run farm, some
-      scrape by on your attention alone, and some quietly fall apart while you are not
-      looking. Whichever it is, it happens at its own pace, and none of it is in a hurry.
-    </p>
+    <div class="wrap">
+      <h2>A colony that grows while you watch it</h2>
+      <p class="lede">
+        It starts with one egg. Tap it until it hatches, and a blobling wanders out into
+        the meadow. It gets hungry. It gets lonely. It leaves a mess. Look after it and it
+        grows up, and a well fed, happy blobling eventually lays an egg of its own.
+      </p>
+      <p>
+        Grown bloblings take on <strong>jobs</strong> &mdash; farming, cleaning, cheering
+        the others up &mdash; so a colony you have tended well starts running itself while
+        you watch. They age. Elders slow down, and eventually pass on peacefully, which
+        makes room for the next generation.
+      </p>
+      <p>
+        No two colonies go the same way. Some grow fat and lazy on a well run farm, some
+        scrape by on your attention alone, and some quietly fall apart while you are not
+        looking. Whichever it is, it happens at its own pace, and none of it is in a hurry.
+      </p>
+    </div>
   </section>
 
-  <section>
-    <h2>Four things you can do</h2>
-    <div class="tools">
-      <div class="tool">
-        <h3>Pet</h3>
-        <p>Cheer up a blobling. They turn red when they are unhappy, so you can spot who needs you.</p>
-      </div>
-      <div class="tool">
-        <h3>Feed</h3>
-        <p>Drop a snack on the ground. Hungry bloblings walk over and help themselves.</p>
-      </div>
-      <div class="tool">
-        <h3>Clean</h3>
-        <p>Sweep up droppings before they upset everyone standing nearby.</p>
-      </div>
-      <div class="tool">
-        <h3>Inspect</h3>
-        <p>Look at one blobling: its needs, its age, its job, and how close it is to an egg.</p>
+  <section class="band">
+    <div class="wrap">
+      <h2>Four things you can do</h2>
+      <div class="tools">
+        <div class="tool" style="--dot: var(--petal-a)">
+          <h3>Pet</h3>
+          <p>Cheer up a blobling. They turn red when they are unhappy, so you can spot who needs you.</p>
+        </div>
+        <div class="tool" style="--dot: var(--accent-fill)">
+          <h3>Feed</h3>
+          <p>Drop a snack on the ground. Hungry bloblings walk over and help themselves.</p>
+        </div>
+        <div class="tool" style="--dot: var(--ink-faint)">
+          <h3>Clean</h3>
+          <p>Sweep up droppings before they upset everyone standing nearby.</p>
+        </div>
+        <div class="tool" style="--dot: var(--petal-b)">
+          <h3>Inspect</h3>
+          <p>Look at one blobling: its needs, its age, its job, and how close it is to an egg.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <section>
-    <h2>Two ways to play</h2>
-    <div class="styles">
-      <div class="style seasons">
-        <h3>Seasons</h3>
-        <span class="kind">the default</span>
-        <p>
-          Your colony has room for a few bloblings. Fill it, then retire it to bank its
-          Bloom and spend that on lasting upgrades &mdash; roomier colonies, hardier
-          bloblings, workers who know a trade. Every colony after starts stronger.
-        </p>
-      </div>
-      <div class="style zen">
-        <h3>Zen</h3>
-        <span class="kind">no scoring</span>
-        <p>
-          No cap worth chasing and nothing to earn. Just a colony that keeps going for as
-          long as you feel like looking after it, growing into its jobs on its own.
-        </p>
+    <div class="wrap">
+      <h2>Two ways to play</h2>
+      <div class="styles">
+        <div class="style">
+          <h3>Seasons</h3>
+          <span class="kind">the default</span>
+          <p>
+            Your colony has room for a few bloblings. Fill it, then retire it to bank its
+            Bloom and spend that on lasting upgrades &mdash; roomier colonies, hardier
+            bloblings, workers who know a trade. Every colony after starts stronger.
+          </p>
+        </div>
+        <div class="style">
+          <h3>Zen</h3>
+          <span class="kind">no scoring</span>
+          <p>
+            No cap worth chasing and nothing to earn. Just a colony that keeps going for as
+            long as you feel like looking after it, growing into its jobs on its own.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section>
-    <h2>What it will never do</h2>
-    <ul class="promises">
-      <li><p><b>No timers or energy.</b> Nothing asks you to come back on a schedule.</p></li>
-      <li><p><b>No punishment for being away.</b> Your colony simply naps while the app is closed.</p></li>
-      <li><p><b>No ads that interrupt you.</b> There is one optional video, tucked at the bottom of the shop, and you never have to touch it.</p></li>
-      <li><p><b>Nothing attacks your colony.</b> The only way to lose one is to stop looking after it.</p></li>
-    </ul>
+  <section class="band">
+    <div class="wrap">
+      <h2>What it will never do</h2>
+      <ul class="promises">
+        <li><p><b>No timers or energy.</b> Nothing asks you to come back on a schedule.</p></li>
+        <li><p><b>No punishment for being away.</b> Your colony simply naps while the app is closed.</p></li>
+        <li><p><b>No ads that interrupt you.</b> There is one optional video, tucked at the bottom of the shop, and you never have to touch it.</p></li>
+        <li><p><b>Nothing attacks your colony.</b> The only way to lose one is to stop looking after it.</p></li>
+      </ul>
+    </div>
   </section>
 
   <section id="beta">
-    <h2>The closed beta</h2>
-    <p>
-      Bloblings is playable and being tested by a small group on Android. The colony sim
-      underneath is finished; what happens next depends a lot on what testers say.
-    </p>
-    <div class="beta">
-      <ol>
-        <li><p><b>Ask for an invite.</b> Testing runs through Google Play, so it needs the email address on your Play account.</p></li>
-        <li><p><b>Install and play for a while.</b> An hour across a few sittings is plenty. Play however you like.</p></li>
-        <li><p><b>Tell me how it went.</b> The <a href="beta.html">feedback page</a> has a short questionnaire that copies your answers to the clipboard, ready to paste back.</p></li>
-      </ol>
+    <div class="wrap">
+      <h2>The closed beta</h2>
       <p>
-        Blunt is more useful than polite. The things that annoyed you or confused you are
-        the most valuable part.
+        Bloblings is playable and being tested by a small group on Android. The colony sim
+        underneath is finished; what happens next depends a lot on what testers say.
       </p>
-      <a class="cta" href="beta.html">Open the feedback page</a>
+      <div class="beta">
+        <ol>
+          <li><p><b>Ask for an invite.</b> Testing runs through Google Play, so it needs the email address on your Play account.</p></li>
+          <li><p><b>Install and play for a while.</b> An hour across a few sittings is plenty. Play however you like.</p></li>
+          <li><p><b>Tell me how it went.</b> The <a href="beta.html">feedback page</a> has a short questionnaire that copies your answers to the clipboard, ready to paste back.</p></li>
+        </ol>
+        <p>
+          Blunt is more useful than polite. The things that annoyed you or confused you are
+          the most valuable part.
+        </p>
+        <a class="cta" href="beta.html">Open the feedback page</a>
+      </div>
     </div>
   </section>
 
-  <section id="updates">
-    <h2>Updates</h2>
-    <p>News as the game grows. Newest first.</p>
+  <section class="band" id="updates">
+    <div class="wrap">
+      <h2>Updates</h2>
+      <p>News as the game grows. Newest first.</p>
 
+    <p class="empty">Nothing yet. The first one lands when the beta opens.</p>
 
     <!-- To add an update, uncomment the block below, or copy it to the TOP of the list
          and change the date, the title and the text. Nothing else needs editing.
          Remove the "empty" paragraph above once there is a real post here. -->
     <div class="posts">
-      <article class="post">
-        <time datetime="2026-07-28">28 July 2026</time>
-        <h3>Test update</h3>
-        <p>Hello, World!</p>
-      </article>
-
 
       <!--
       <article class="post">
@@ -522,28 +563,34 @@
       -->
 
     </div>
+    </div>
   </section>
 
   <section>
-    <h2>Where it is heading</h2>
-    <ul class="next">
-      <li><p><b>Bloblings that pass traits to their children.</b> Breed a bloodline: hardier eaters, tidier blobs, sunnier moods.</p></li>
-      <li><p><b>Voices.</b> Each blobling chirping in a pitch of its own, so a colony sounds as alive as it looks.</p></li>
-      <li><p><b>Weather, and day turning to night.</b> Dawn, dusk, rain, and blobs that slow down in the dark.</p></li>
-      <li><p><b>Surprises while a colony lives.</b> A wanderer asking to join, a berry bloom, a cold snap.</p></li>
-      <li><p><b>Something to show for it.</b> Hats, colours, and family trees going back to your very first blobling.</p></li>
-    </ul>
-    <p style="margin-top:1.2rem">
-      What gets built first depends on what the beta says, so if you are testing, your
-      answers genuinely decide the order.
-    </p>
+    <div class="wrap">
+      <h2>Where it is heading</h2>
+      <ul class="next">
+        <li><p><b>Bloblings that pass traits to their children.</b> Breed a bloodline: hardier eaters, tidier blobs, sunnier moods.</p></li>
+        <li><p><b>Voices.</b> Each blobling chirping in a pitch of its own, so a colony sounds as alive as it looks.</p></li>
+        <li><p><b>Weather, and day turning to night.</b> Dawn, dusk, rain, and blobs that slow down in the dark.</p></li>
+        <li><p><b>Surprises while a colony lives.</b> A wanderer asking to join, a berry bloom, a cold snap.</p></li>
+        <li><p><b>Something to show for it.</b> Hats, colours, and family trees going back to your very first blobling.</p></li>
+      </ul>
+      <p style="margin-top:1.4rem">
+        What gets built first depends on what the beta says, so if you are testing, your
+        answers genuinely decide the order.
+      </p>
+    </div>
   </section>
 
+</main>
+
+<div class="wrap">
   <footer>
     <span>Bloblings &mdash; made by beMAD</span>
     <span>Currently in closed testing on Android</span>
   </footer>
-
 </div>
+
 </body>
 </html>
