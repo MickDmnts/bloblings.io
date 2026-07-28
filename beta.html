@@ -409,6 +409,22 @@
   .said { font-size: 0.9rem; font-weight: 600; color: var(--blob); }
   .said:empty { display: none; }
 
+  /* the way in, for anyone who lands here before they are a tester */
+  .joinbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem 1.4rem;
+    flex-wrap: wrap;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 1.1rem 1.3rem;
+  }
+
+  .joinbar p { color: var(--ink-soft); flex: 1 1 20rem; min-width: 0; }
+  .joinbar b { color: var(--ink); font-weight: 650; }
+  .joinbar .disc { flex: none; align-self: center; }
+
   .then { padding-top: 0.2rem; border-top: 1px solid var(--line-soft); margin-top: 0.2rem; }
   .then b { color: var(--ink); font-family: var(--mono); font-size: 0.92em; }
 
@@ -582,6 +598,15 @@
     <div class="kept" id="kept" hidden>
       <span id="keptsaid">Your earlier answers are back.</span>
       <button type="button" class="quiet" id="wipe">Start over</button>
+    </div>
+
+    <div class="joinbar">
+      <p>
+        <b>Not in the beta yet?</b>
+        Testing runs through Google Play, so I need the email on your Play account to add
+        you. Ask on the Discord and you are in.
+      </p>
+      <a class="disc" href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Join the beta on Discord</a>
     </div>
 
     <details class="starter">
