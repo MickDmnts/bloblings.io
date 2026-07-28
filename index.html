@@ -26,6 +26,10 @@
     --petal-a: #d98b6f;
     --petal-b: #9b8fd1;
     --shade: rgba(23, 37, 26, 0.09);
+    --nav-well: rgba(255, 255, 255, 0.55);
+    --nav-edge: rgba(23, 37, 26, 0.08);
+    --nav-wash: rgba(242, 201, 76, 0.3);
+    --nav-halo: rgba(242, 201, 76, 0.5);
 
     --display: ui-rounded, "SF Pro Rounded", "Segoe UI Variable Display", "Trebuchet MS", system-ui, sans-serif;
     --body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -40,6 +44,10 @@
       --sky-top: #26351f; --sky-bottom: #19241a;
       --petal-a: #e5896f; --petal-b: #b8a9e8;
       --shade: rgba(0, 0, 0, 0.28);
+      --nav-well: rgba(0, 0, 0, 0.2);
+      --nav-edge: rgba(233, 242, 216, 0.09);
+      --nav-wash: rgba(242, 201, 76, 0.18);
+      --nav-halo: rgba(242, 201, 76, 0.45);
     }
   }
 
@@ -50,6 +58,10 @@
     --sky-top: #26351f; --sky-bottom: #19241a;
     --petal-a: #e5896f; --petal-b: #b8a9e8;
     --shade: rgba(0, 0, 0, 0.28);
+    --nav-well: rgba(0, 0, 0, 0.2);
+    --nav-edge: rgba(233, 242, 216, 0.09);
+    --nav-wash: rgba(242, 201, 76, 0.18);
+    --nav-halo: rgba(242, 201, 76, 0.45);
   }
 
   :root[data-theme="light"] {
@@ -59,6 +71,10 @@
     --sky-top: #e2edcf; --sky-bottom: #edf3df;
     --petal-a: #d98b6f; --petal-b: #9b8fd1;
     --shade: rgba(23, 37, 26, 0.09);
+    --nav-well: rgba(255, 255, 255, 0.55);
+    --nav-edge: rgba(23, 37, 26, 0.08);
+    --nav-wash: rgba(242, 201, 76, 0.3);
+    --nav-halo: rgba(242, 201, 76, 0.5);
   }
 
   *, *::before, *::after { box-sizing: border-box; }
@@ -112,11 +128,49 @@
     padding: 1.1rem 0;
   }
 
-  nav > img { width: 34px; height: 34px; border-radius: 10px; }
+  .home { display: block; border-radius: 10px; }
+  .home img { width: 34px; height: 34px; border-radius: 10px; transition: box-shadow 0.14s ease; }
+  .home:hover img { box-shadow: 0 0 0 3px var(--nav-halo); }
+  .home:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; }
 
-  .nav-links { display: flex; gap: 1.4rem; font-size: 0.95rem; }
-  .nav-links a { color: var(--ink-soft); text-decoration: none; }
-  .nav-links a:hover { color: var(--accent); }
+  /* one gold pill marks where you are, the rest wash gold as you pass over them */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.25rem;
+    background: var(--nav-well);
+    border: 1px solid var(--nav-edge);
+    border-radius: 999px;
+  }
+
+  .nav-links a {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 0.32rem 0.9rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    transition: background 0.14s ease, color 0.14s ease;
+  }
+
+  .nav-links a:hover { color: var(--ink); background: var(--nav-wash); }
+
+  /* the page you are on is tinted, not filled: solid gold stays reserved for actions */
+  .nav-links a[aria-current] {
+    color: var(--accent);
+    background: var(--nav-wash);
+    font-weight: 700;
+  }
+
+  .nav-links a[aria-current]:hover { color: var(--accent); background: var(--nav-wash); }
+  .nav-links a:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+
+  @media (max-width: 380px) {
+    .nav-links a { padding: 0.32rem 0.7rem; font-size: 0.84rem; }
+  }
 
   .hero-inner {
     position: relative;
@@ -137,6 +191,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .blob, .far { animation: none; }
+    .home img, .nav-links a, .cta { transition: none; }
   }
 
   .badge {
@@ -416,8 +471,9 @@
 
   <div class="wrap">
     <nav>
-      <img src="icon.png" alt="">
+      <a class="home" href="index.html"><img src="icon.png" alt="Bloblings home"></a>
       <div class="nav-links">
+        <a href="index.html" aria-current="page">Home</a>
         <a href="#updates">Updates</a>
         <a href="beta.html">Beta</a>
       </div>
