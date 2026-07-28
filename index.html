@@ -372,7 +372,23 @@
   }
 
   .beta b { color: var(--ink); font-weight: 650; }
-  .beta .cta { align-self: flex-start; margin-top: 0; }
+
+  .pair { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+  .pair .cta { margin-top: 0; }
+
+  .alt {
+    display: inline-block;
+    font-weight: 650;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.7rem 1.6rem;
+    transition: border-color 0.14s ease, transform 0.12s ease;
+  }
+
+  .alt:hover { border-color: var(--ink-faint); transform: translateY(-1px); }
+  .alt:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; }
 
   /* coming next */
 
@@ -555,15 +571,18 @@
       </p>
       <div class="beta">
         <ol>
-          <li><p><b>Ask for an invite.</b> Testing runs through Google Play, so it needs the email address on your Play account.</p></li>
+          <li><p><b>Join the Discord and ask for an invite.</b> Testing runs through Google Play, so it needs the email address on your Play account.</p></li>
           <li><p><b>Install and play for a while.</b> An hour across a few sittings is plenty. Play however you like.</p></li>
-          <li><p><b>Tell me how it went.</b> The <a href="beta.html">feedback page</a> has a short questionnaire that copies your answers to the clipboard, ready to paste back.</p></li>
+          <li><p><b>Tell me how it went.</b> The <a href="beta.html">feedback page</a> has a short questionnaire that copies your answers, ready to paste into the Discord.</p></li>
         </ol>
         <p>
           Blunt is more useful than polite. The things that annoyed you or confused you are
           the most valuable part.
         </p>
-        <a class="cta" href="beta.html">Open the feedback page</a>
+        <div class="pair">
+          <a class="cta" href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Join the Discord</a>
+          <a class="alt" href="beta.html">Open the feedback page</a>
+        </div>
       </div>
     </div>
   </section>
@@ -590,7 +609,7 @@
 <div class="wrap">
   <footer>
     <span>Bloblings &mdash; made by beMAD</span>
-    <span>Currently in closed testing on Android</span>
+    <span><a href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Discord</a> &middot; closed testing on Android</span>
   </footer>
 </div>
 

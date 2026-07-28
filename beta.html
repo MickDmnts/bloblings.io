@@ -409,6 +409,25 @@
   .said { font-size: 0.9rem; font-weight: 600; color: var(--blob); }
   .said:empty { display: none; }
 
+  .then { padding-top: 0.2rem; border-top: 1px solid var(--line-soft); margin-top: 0.2rem; }
+  .then b { color: var(--ink); font-family: var(--mono); font-size: 0.92em; }
+
+  .disc {
+    align-self: flex-start;
+    display: inline-block;
+    font-weight: 650;
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.55rem 1.3rem;
+    transition: border-color 0.14s ease, transform 0.12s ease;
+  }
+
+  .disc:hover { border-color: var(--ink-faint); transform: translateY(-1px); }
+  .disc:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
   /* ---------- the bar that follows you down the page ---------- */
 
   .rail {
@@ -689,13 +708,17 @@
       <h2>Sending it back</h2>
       <p>
         Nothing here is uploaded anywhere. Your answers are kept in this browser as you
-        type, and nowhere else. Press the button, they get copied as plain text, and you
-        paste them wherever we are talking.
+        type, and nowhere else. Press the button and they are copied as plain text.
       </p>
       <div class="actions">
         <button type="button" class="gold" id="copy">Copy my answers</button>
         <span class="said" id="said" role="status" aria-live="polite"></span>
       </div>
+      <p class="then">
+        Then paste them into <b>#feedback</b> on the Bloblings Discord. That is where I
+        read them, and where new builds get announced.
+      </p>
+      <a class="disc" href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Open the Discord</a>
     </section>
 
     <section>
@@ -714,7 +737,7 @@
 
   <footer>
     <span>Bloblings &mdash; made by beMAD</span>
-    <span>Currently in closed testing on Android</span>
+    <span><a href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Discord</a> &middot; closed testing on Android</span>
   </footer>
 </div>
 
