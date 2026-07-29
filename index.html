@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bloblings — a tiny colony sim</title>
+<title>Bloblings, a tiny colony sim</title>
 <meta name="description" content="Hatch a colony of small round creatures, keep them fed and happy, and watch a meadow fill with little lives. A calm colony sim for Android, in closed beta.">
 <meta property="og:title" content="Bloblings">
 <meta property="og:description" content="A tiny colony sim for Android. Hatch them, feed them, keep them happy.">
@@ -323,18 +323,21 @@
 
   .promises li {
     display: grid;
-    grid-template-columns: 1.35rem 1fr;
-    gap: 0.75rem;
+    grid-template-columns: 0.55rem 1fr;
+    gap: 0.95rem;
     align-items: start;
     color: var(--ink-soft);
     max-width: 60ch;
   }
 
+  /* a drawn dot rather than a typed character, matching the list further down */
   .promises li::before {
-    content: "\2713";
-    color: var(--blob);
-    font-weight: 700;
-    line-height: 1.7;
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--blob);
+    margin-top: 0.66rem;
   }
 
   .promises b { color: var(--ink); font-weight: 600; }
@@ -469,7 +472,7 @@
       <svg class="blob" viewBox="0 0 64 64" role="img" aria-label="A blobling">
         <use href="#blobling" />
       </svg>
-      <span class="badge">Closed beta &middot; Android</span>
+      <span class="badge">Closed beta on Android</span>
       <h1>Bloblings</h1>
       <p class="tagline">Hatch a colony of small round creatures and keep them fed, clean and happy.</p>
       <a class="cta" href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Join the beta on Discord</a>
@@ -488,9 +491,8 @@
         grows up, and a well fed, happy blobling eventually lays an egg of its own.
       </p>
       <p>
-        Grown bloblings take on <strong>jobs</strong> &mdash; farming, cleaning, cheering
-        the others up &mdash; so a colony you have tended well starts running itself while
-        you watch. They age. Elders slow down, and eventually pass on peacefully, which
+        Grown bloblings take on <strong>jobs</strong>. They farm, they clean, they cheer the
+        others up, so a colony you have tended well starts running itself while you watch. They age. Elders slow down, and eventually pass on peacefully, which
         makes room for the next generation.
       </p>
       <p>
@@ -534,8 +536,8 @@
           <span class="kind">the default</span>
           <p>
             Your colony has room for a few bloblings. Fill it, then retire it to bank its
-            Bloom and spend that on lasting upgrades &mdash; roomier colonies, hardier
-            bloblings, workers who know a trade. Every colony after starts stronger.
+            Bloom and spend that on lasting upgrades: roomier colonies, hardier bloblings,
+            workers who know a trade. Every colony after starts stronger.
           </p>
         </div>
         <div class="style">
@@ -608,8 +610,8 @@
 
 <div class="wrap">
   <footer>
-    <span>Bloblings &mdash; made by beMAD</span>
-    <span><a href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Discord</a> &middot; closed testing on Android</span>
+    <span>Bloblings, made by beMAD</span>
+    <span><a href="https://discord.gg/J5cwKpkcxF" target="_blank" rel="noopener">Discord</a>, closed testing on Android</span>
   </footer>
 </div>
 
